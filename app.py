@@ -26,7 +26,7 @@ class outGet(Resource):
 api.add_resource(HelloWorld, '/')
 api.add_resource(Bambang, '/BambangZ')
 api.add_resource(inGet, '/bambang/masuk')
-api.add_resource(Bambang, '/bambang/keluar')
+api.add_resource(outGet, '/bambang/keluar')
 
 
 if __name__ == '__main__':

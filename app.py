@@ -9,7 +9,6 @@ class HelloWorld(Resource):
     def get(self):
         return jsonify({'name': 'Hello',
                     'email': 'Hello World!'})
-    def put(self,user_id):
        
 class Bambang(Resource):
     def get(self):

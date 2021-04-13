@@ -1,0 +1,103 @@
+{% extends 'bootstrap/base.html' %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% block content %}
+
+      <div class="container">
+
+      <form class="well form-horizontal" action="" method="post"  id="contact_form">
+        {{ form.hidden_tag() }}
+        <fieldset>
+        
+        <!-- Form Name -->
+        <legend><center><h2><b>Registration Form In</b></h2></center></legend><br>
+        
+        <!-- Text input-->
+        
+        <div class="form-group">
+          <label class="col-md-4 control-label"></label>  
+          <div class="col-md-4 inputGroupContainer">
+          <div class="input-group">
+          {{ wtf.form_field(form.name, class='form-control', placeholder='Nama') }}
+            </div>
+          </div>
+        </div>
+        
+        <!-- Text input-->
+        
+        <div class="form-group">
+          <label class="col-md-4 control-label" ></label> 
+            <div class="col-md-4 inputGroupContainer">
+            <div class="input-group">
+              {{ wtf.form_field(form.dateBorn, class='form-control', placeholder='Tanggal Lahir') }}
+            </div>
+          </div>
+        </div>
+        <!-- Text input-->
+        
+        <div class="form-group">
+          <label class="col-md-4 control-label"></label>  
+          <div class="col-md-4 inputGroupContainer">
+          <div class="input-group">
+            {{ wtf.form_field(form.jKelamin, class='form-control', placeholder='Jenis Kelamin') }}
+            </div>
+          </div>
+        </div>
+        
+        <!-- Text input-->
+        
+        <div class="form-group">
+          <label class="col-md-4 control-label" ></label> 
+            <div class="col-md-4 inputGroupContainer">
+            <div class="input-group">
+              {{ wtf.form_field(form.jIdentitas, class='form-control', placeholder='Jenis Identitas') }}
+            </div>
+          </div>
+        </div>
+        
+        <!-- Text input-->
+               <div class="form-group">
+          <label class="col-md-4 control-label"></label>  
+            <div class="col-md-4 inputGroupContainer">
+            <div class="input-group">
+              {{ wtf.form_field(form.noIdentitas, class='form-control', placeholder='Nomor Identitas') }}
+            </div>
+          </div>
+        </div>
+        
+        
+        <!-- Text input-->
+               
+        <div class="form-group">
+          <label class="col-md-4 control-label"></label>  
+            <div class="col-md-4 inputGroupContainer">
+            <div class="input-group">
+              {{ wtf.form_field(form.noTelepon, class='form-control', placeholder='Nomor Telepon') }}
+            </div>
+          </div>
+        </div>
+
+        <!-- Text input-->
+        
+        <div class="form-group">
+            <label class="col-md-4 control-label"></label>  
+                <div class="col-md-4 inputGroupContainer">
+                <div class="input-group">
+                {{ wtf.form_field(form.alamat, class='form-control', placeholder='Alamat') }}
+                </div>
+            </div>
+            </div>
+        
+        <!-- Button -->
+        <div class="form-group">
+          <label class="col-md-4 control-label"></label>
+          <div class="col-md-4"><br>
+            &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+            <button type="submit" class="btn btn-warning" >&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp {{ wtf.form_field(form.submit, class='btn btn-warning') }}<span class="glyphicon glyphicon-send"></span>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</button>
+          </div>
+        </div>
+        
+        </fieldset>
+        </form>
+        </div>
+            </div><!-- /.container -->
+{% endblock %}

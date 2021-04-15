@@ -11,8 +11,8 @@ class HelloWorld(Resource):
 
 class inGet(Resource):
     def get(self):
-        if data:
-            data = request.get_json(force=True)
+        data = request.get_json(force=True)
+        try:
             nameCusto = data['nama_lengkap']
             tgglCusto = data['tanggal_lahir']
             jeKelamin = data['jenis_kelamin']
@@ -35,14 +35,16 @@ class inGet(Resource):
             kabpTujOu = data['kabpTujOu']
             kecmTujOu = data['kecmTujOu']
             alamTujOu = data['alamTujOu']
-            return jsonify(data)
-        else:
-            return{"Message":"Data Tidak Ditemukan atau Gagal Parsing"}
+            return jsonify(data), 200
+        except Exception as e:
+            response = jsonify(e.to_dict())
+            response.status_code = e.status_code
+            return response
 
 class outGet(Resource):
     def get(self):
-        if data:
-            data = request.get_json(force=True)
+        data = request.get_json(force=True)
+        try:
             nameCusto = data['nama_lengkap']
             tgglCusto = data['tanggal_lahir']
             jeKelamin = data['jenis_kelamin']
@@ -65,9 +67,12 @@ class outGet(Resource):
             kabpTujOu = data['kabpTujOu']
             kecmTujOu = data['kecmTujOu']
             alamTujOu = data['alamTujOu']
-            return jsonify(data)
-        else:
-            return{"Message":"Data Tidak Ditemukan atau Gagal Parsing"}
+            return jsonify(data), 200
+        except Exception as e:
+            response = jsonify(e.to_dict())
+            response.status_code = e.status_code
+            return response
+        
 
 api.add_resource(HelloWorld, '/')
 api.add_resource(inGet, '/form-in')

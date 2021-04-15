@@ -58,7 +58,7 @@ class outGet(Resource):
             alamTujOu = data['alamTujOu']
             return {jsonify(data)}
         else:
-            return{"Data Tidak Ditemukan atau Gagal Parsing"}
+            return{'Message':'Data Tidak Ditemukan atau Gagal Parsing'}
 
 class outGet(Resource):
     def get(self):
@@ -88,7 +88,7 @@ class outGet(Resource):
             alamTujOu = data['alamTujOu']
             return {jsonify(data)}
         else:
-            return{"Data Tidak Ditemukan atau Gagal Parsing"}
+            return{'Message':'Data Tidak Ditemukan atau Gagal Parsing'}
 
 api.add_resource(HelloWorld, '/')
 api.add_resource(inGet, '/form-in')

@@ -6,8 +6,8 @@ api = Api(app)
 
 class HelloWorld(Resource):
     def get(self):
-        return jsonify({'name': 'Hello',
-                    'email': 'Hello World!'})
+        return jsonify({'Message': 'Semangat Memberantas Covid Bambang Covid!',
+                    'email': 'bambangcovid@kenacovid.aw.com'})
 
 class inGet(Resource):
     def get(self):

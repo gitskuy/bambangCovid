@@ -11,8 +11,8 @@ class HelloWorld(Resource):
 
 class inGet(Resource):
     def get(self):
-        data = request.get_json(force=True)
         try:
+            data = request.get_json(force=True)
             nameCusto = data['nama_lengkap']
             tgglCusto = data['tanggal_lahir']
             jeKelamin = data['jenis_kelamin']
@@ -43,8 +43,8 @@ class inGet(Resource):
 
 class outGet(Resource):
     def get(self):
-        data = request.get_json(force=True)
         try:
+            data = request.get_json(force=True)
             nameCusto = data['nama_lengkap']
             tgglCusto = data['tanggal_lahir']
             jeKelamin = data['jenis_kelamin']

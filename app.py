@@ -4,11 +4,14 @@ from flask_restful import reqparse, abort, Api, Resource
 app = Flask(__name__)
 api = Api(app)
 
+
+
 class HelloWorld(Resource):
     def get(self):
         return jsonify({'Message': 'Semangat Memberantas Covid Bambang Covid!',
                     'email': 'bambangcovid@kenacovid.aw.com'})
 
+@app.route('/form-in',methods=['POST'])
 class inGet(Resource):
     def get(self):
         try:
@@ -21,7 +24,7 @@ class inGet(Resource):
             noTelepon = data['no_telepon']
             alamatKtp = data['alamat_sesuai_ktp']
             suhuBadan = data['suhu_badan']
-            if data['tidak_ada_gejala'] == True:
+            if data['tidak_ada_gejala'] == False:
                 dftrGjala = data['daftar_gejala']
                 gjalalain = data['gejala_lain']
             else:
@@ -39,6 +42,7 @@ class inGet(Resource):
         except Exception as e:
             return {'error':str(e)}
 
+@app.route('/form-out',methods=['POST'])
 class outGet(Resource):
     def get(self):
         try:

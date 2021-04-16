@@ -71,7 +71,7 @@ def formOut():
         return {'error':str(e)}
 
 @app.route('/rekomendasi-tempat',methods=['POST'])
-def formOut():
+def rekomendasitempat():
     try:
         data = request.get_json(force=True)
         namaTmpt = data['nama_tempat']
@@ -86,7 +86,6 @@ def formOut():
     except Exception as e:
         return {'error':str(e)}
         
-
 api.add_resource(HelloWorld, '/')
 #api.add_resource(inGet, '/form-in')
 #api.add_resource(outGet, '/form-out')

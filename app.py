@@ -28,14 +28,14 @@ def formIn():
         else:
             pass
         kontatsta = data['is_kontak_positif']
-        provTujIn = data['provTujIn']
-        kebpTujIn = data['kebpTujIn']
-        kecmTujIn = data['kecmTujIn']
-        alamTujIn = data['alamTujIn']
-        provTujOu = data['provTujOu']
-        kabpTujOu = data['kabpTujOu']
-        kecmTujOu = data['kecmTujOu']
-        alamTujOu = data['alamTujOu']
+        provTujIn = data['provinsi_asal']
+        kebpTujIn = data['kabupaten_asal']
+        kecmTujIn = data['kecamatan_asal']
+        alamTujIn = data['alamat_asal']
+        provTujOu = data['provinsi_tujuan']
+        kabpTujOu = data['kabupaten_tujuan']
+        kecmTujOu = data['kecamatan_tujuan']
+        alamTujOu = data['alamat_tujuan']
         return jsonify(data), 200
     except Exception as e:
         return {'error':str(e)}
@@ -58,14 +58,14 @@ def formOut():
         else:
             pass
         kontatsta = data['is_kontak_positif']
-        provTujIn = data['provTujIn']
-        kebpTujIn = data['kebpTujIn']
-        kecmTujIn = data['kecmTujIn']
-        alamTujIn = data['alamTujIn']
-        provTujOu = data['provTujOu']
-        kabpTujOu = data['kabpTujOu']
-        kecmTujOu = data['kecmTujOu']
-        alamTujOu = data['alamTujOu']
+        provTujIn = data['provinsi_asal']
+        kebpTujIn = data['kabupaten_asal']
+        kecmTujIn = data['kecamatan_asal']
+        alamTujIn = data['alamat_asal']
+        provTujOu = data['provinsi_tujuan']
+        kabpTujOu = data['kabupaten_tujuan']
+        kecmTujOu = data['kecamatan_tujuan']
+        alamTujOu = data['alamat_tujuan']
         return jsonify(data), 200
     except Exception as e:
         return {'error':str(e)}

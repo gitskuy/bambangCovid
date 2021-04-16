@@ -11,7 +11,11 @@ class HelloWorld(Resource):
         return jsonify({'Message': 'Semangat Memberantas Covid Bambang Covid!',
                     'email': 'bambangcovid@kenacovid.aw.com'})
 
-@app.route('/form-in',methods=['POST'])
+@app.route('/form',methods=['POST'])
+def coba():
+    data = request.get_json(force=True)
+    return data['nama_lengkap']
+
 class inGet(Resource):
     def get(self):
         try:
@@ -42,7 +46,6 @@ class inGet(Resource):
         except Exception as e:
             return {'error':str(e)}
 
-@app.route('/form-out',methods=['POST'])
 class outGet(Resource):
     def get(self):
         try:

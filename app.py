@@ -37,9 +37,7 @@ class inGet(Resource):
             alamTujOu = data['alamTujOu']
             return jsonify(data), 200
         except Exception as e:
-            response = jsonify(e.to_dict())
-            response.status_code = e.status_code
-            return response
+            return {'error':str(e)}
 
 class outGet(Resource):
     def get(self):
@@ -69,9 +67,7 @@ class outGet(Resource):
             alamTujOu = data['alamTujOu']
             return jsonify(data), 200
         except Exception as e:
-            response = jsonify(e.to_dict())
-            response.status_code = e.status_code
-            return response
+            return {'error':str(e)}
         
 
 api.add_resource(HelloWorld, '/')

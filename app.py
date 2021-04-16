@@ -69,6 +69,22 @@ def formOut():
         return jsonify(data), 200
     except Exception as e:
         return {'error':str(e)}
+
+@app.route('/rekomendasi-tempat',methods=['POST'])
+def formOut():
+    try:
+        data = request.get_json(force=True)
+        namaTmpt = data['nama_tempat']
+        provinsi = data['provinsi']
+        kabupatn = data['kabupaten']
+        kecamatn = data['kecamatan']
+        alamat = data['alamat']
+        jenis = data['jenis']
+        telepon = data['telepon']
+        ketersed = data['ketersediaan_ruang']
+        return jsonify(data), 200
+    except Exception as e:
+        return {'error':str(e)}
         
 
 api.add_resource(HelloWorld, '/')

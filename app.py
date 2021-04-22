@@ -70,21 +70,35 @@ def formOut():
     except Exception as e:
         return {'error':str(e)}
 
-@app.route('/rekomendasi-tempat',methods=['POST'])
+@app.route('/rekomendasi-tempat',methods=['GET','POST'])
 def rekomendasitempat():
-    try:
-        data = request.get_json(force=True)
-        namaTmpt = data['nama_tempat']
-        provinsi = data['provinsi']
-        kabupatn = data['kabupaten']
-        kecamatn = data['kecamatan']
-        alamat = data['alamat']
-        jenis = data['jenis']
-        telepon = data['telepon']
-        ketersed = data['ketersediaan_ruang']
-        return jsonify(data), 200
-    except Exception as e:
-        return {'error':str(e)}
+    if request.method == 'GET':
+        try:
+            namaTmpt = request.args.get('nama_tempat')
+            provinsi = request.args.get('provinsi']
+            kabupatn = request.args.get('kabupaten']
+            kecamatn = request.args.get('kecamatan']
+            alamat = request.args.get('alamat']
+            jenis = request.args.get('jenis']
+            telepon = request.args.get('telepon']
+            ketersed = request.args.get('ketersediaan_ruang']
+            return redirect(url_for('success',name = namaTmpt))
+        except Exception as e:
+            return {'error':str(e)}
+    else:
+        try:
+            data = request.get_json(force=True)
+            namaTmpt = data['nama_tempat']
+            provinsi = data['provinsi']
+            kabupatn = data['kabupaten']
+            kecamatn = data['kecamatan']
+            alamat = data['alamat']
+            jenis = data['jenis']
+            telepon = data['telepon']
+            ketersed = data['ketersediaan_ruang']
+            return jsonify(data), 200
+        except Exception as e:
+            return {'error':str(e)}
         
 api.add_resource(HelloWorld, '/')
 #api.add_resource(inGet, '/form-in')

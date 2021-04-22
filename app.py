@@ -75,14 +75,14 @@ def rekomendasitempat():
     if request.method == 'GET':
         try:
             namaTmpt = request.args.get('nama_tempat')
-            provinsi = request.args.get('provinsi']
-            kabupatn = request.args.get('kabupaten']
-            kecamatn = request.args.get('kecamatan']
-            alamat = request.args.get('alamat']
-            jenis = request.args.get('jenis']
-            telepon = request.args.get('telepon']
-            ketersed = request.args.get('ketersediaan_ruang']
-            return redirect(url_for('success',name = namaTmpt))
+            provinsi = request.args.get('provinsi')
+            kabupatn = request.args.get('kabupaten')
+            kecamatn = request.args.get('kecamatan')
+            alamat = request.args.get('alamat')
+            jenis = request.args.get('jenis')
+            telepon = request.args.get('telepon')
+            ketersed = request.args.get('ketersediaan_ruang')
+            return {'Message':'Success'}
         except Exception as e:
             return {'error':str(e)}
     else:

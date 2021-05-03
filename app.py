@@ -141,7 +141,7 @@ def searchIn():
         noIden = request.form['noIdentit']
         try:
             cursor.execute("",(noIden))
-        except Exception,e:
+        except Exception as e:
             conn.rollback()
         else:
             conn.commit()
@@ -164,9 +164,9 @@ def editRekomendasi():
 
         data = (namaTmpt, provinsi, kabupatn, kecamatn, alamat, jenis, telepon, ketersed)
         try:
-            conn = .... 
-            cursor = conn.cursor()
-            cursor.execute(ini quernya apa.... , data)
+            #conn = .... 
+            #cursor = conn.cursor()
+            #cursor.execute(ini quernya apa.... , data)
             # accept the changes
             conn.commit()
 
@@ -186,7 +186,7 @@ def searchOut():
         noIden = request.form['noIdentit']
         try:
             cursor.execute("",(noIden))
-        except Exception,e:
+        except Exception as e:
             conn.rollback()
         else:
             conn.commit()

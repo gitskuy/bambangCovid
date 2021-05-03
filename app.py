@@ -114,24 +114,25 @@ class HelloWorld(Resource):
         return jsonify({'Message': 'Semangat Memberantas Covid Bambang Covid!',
                     'email': 'bambangcovid@kenacovid.aw.com'})
 
-@app.route('/login', methods = ["POST"])
+@app.route('/login', methods = ["GET", "POST"])
 def login():
-    un = request.form['Username']
-    pw = request.form['Password']
+    if request.method == "GET":  
+        un = request.form['Username']
+        pw = request.form['Password']
 
-    cursor = connection.cursor()
-    query1 = "SELECT Username, Password From Users WHERE Username = {un} AND Password = {pw}".format(un = UN, pw = PW)
+        cursor = connection.cursor()
+        query1 = "SELECT Username, Password From Users WHERE Username = {un} AND Password = {pw}".format(un = UN, pw = PW)
 
-    rows = cursor.excecute(query1)
-    rows = rows.fetchall()
-    if len(rows) == 1:
-        return('Message':'Login Sukses')
-    else:
-        return('Message':'Login Gagal')
+        rows = cursor.excecute(query1)
+        rows = rows.fetchall()
+        if len(rows) == 1:
+            return{'Message':'Login Sukses'}
+        else:
+            return{'Message':'Login Gagal'}
 
 @app.route('/logout', methods = ["POST"])
 def logout():
-    return ('Message':'Logout Sukses')
+    return {'Message':'Logout Sukses'}
 
 
 @app.route("/search-in", methods=['GET','POST'])
@@ -145,8 +146,8 @@ def searchIn():
         else:
             conn.commit()
         data = cursor.fetchall()
-        return ("Message":"Data Ditemukan")
-    return ("Message":"Data Tidak Ditemukan")
+        return {"Message":"Data Ditemukan"}
+    return {"Message":"Data Tidak Ditemukan"}
 
 @app.route("/edit-rekomendasi", methods=['GET','POST'])
 def editRekomendasi():
@@ -175,8 +176,8 @@ def editRekomendasi():
         finally:
             cursor.close()
             conn.close()
-        return ("Message":"Data Di Update")
-    return ("Message":"Error")
+        return {"Message":"Data Di Update"}
+    return {"Message":"Error"}
 
 
 @app.route("/search-out", methods=['GET','POST'])
@@ -190,8 +191,8 @@ def searchOut():
         else:
             conn.commit()
         data = cursor.fetchall()
-        return ("Message":"Data Ditemukan")
-    return ("Message":"Data Tidak Ditemukan")
+        return {"Message":"Data Ditemukan"}
+    return {"Message":"Data Tidak Ditemukan"}
 
 @app.route('/form-in',methods=['POST'])
 def formIn():

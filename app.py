@@ -148,12 +148,12 @@ def editRekomendasi():
     data = request.get_json()
     namaTmpt = data['nama_tempat']
     provinsi = data['provinsi']
-    kabupatn = data['kabupaten')
-    kecamatn = data['kecamatan')
-    alamat = data['alamat')
-    jenis = data['jenis')
-    telepon = data['telepon')
-    ketersed = data['ketersediaan_ruang')
+    kabupatn = data['kabupaten']
+    kecamatn = data['kecamatan']
+    alamat = data['alamat']
+    jenis = data['jenis']
+    telepon = data['telepon']
+    ketersed = data['ketersediaan_ruang']
 
     try:
         newtitle = request.form.get("newtitle")

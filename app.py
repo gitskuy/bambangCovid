@@ -12,6 +12,7 @@ db_user = "vputlrxzjcwffs"
 db_pass = "ebc3f1ac8d6de628c643fe9440f03ffe691918d34784868f807d31cf1da09efd"
 
 connection = psycopg2.connect(dbname=db_name, user=db_user, password=db_pass, host=db_host)
+cursor = connection.cursor()
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://vputlrxzjcwffs:ebc3f1ac8d6de628c643fe9440f03ffe691918d34784868f807d31cf1da09efd@ec2-34-225-103-117.compute-1.amazonaws.com:5432/d1ati88i3hiodn'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -63,6 +64,9 @@ class UserIn(db.Model):
         self.kabpTujOu = kabpTujOu
         self.kecmTujOu = kecmTujOu
         self.alamTujOu = alamTujOu
+    
+    # def __repr__(self):
+    #     return '%s/%s/%s' % (self.nameCusto, self.tgglCusto, self.jeKelamin)
 
 class UserOut(db.Model):
     __tablename__='UserOut'
@@ -137,16 +141,16 @@ def logout():
 
 @app.route("/search-in", methods=['GET','POST'])
 def searchIn():
-    if request.method == "POST":  
+    if request.method == "GET":  
         noIden = request.form['noIdentit']
         try:
-            cursor.execute("",(noIden))
+            cursor.execute('SELECT * FROM public."UserIn"',(noIden))
         except Exception as e:
             conn.rollback()
         else:
             conn.commit()
         data = cursor.fetchall()
-        return {"Message":"Data Ditemukan"}
+        return jsonify(data), 200
     return {"Message":"Data Tidak Ditemukan"}
 
 @app.route("/edit-rekomendasi", methods=['GET','POST'])
@@ -194,77 +198,144 @@ def searchOut():
         return {"Message":"Data Ditemukan"}
     return {"Message":"Data Tidak Ditemukan"}
 
-@app.route('/form-in',methods=['POST'])
+@app.route('/form-in',methods=['GET', 'POST'])
 def formIn():
-    try:
-        data = request.get_json(force=True)
-        nameCusto = data['nama_lengkap']
-        tgglCusto = data['tanggal_lahir']
-        jeKelamin = data['jenis_kelamin']
-        jeIdentit = data['jenis_identitas']
-        noIdentit = data['nomor_identitas']
-        noTelepon = data['no_telepon']
-        alamatKtp = data['alamat_sesuai_ktp']
-        suhuBadan = data['suhu_badan']
-        if data['tidak_ada_gejala'] == False:
-            dftrGjala = data['daftar_gejala']
-            gjalalain = data['gejala_lain']
-        else:
-            pass
-        kontatsta = data['is_kontak_positif']
-        provTujIn = data['provinsi_asal']
-        kebpTujIn = data['kabupaten_asal']
-        kecmTujIn = data['kecamatan_asal']
-        alamTujIn = data['alamat_asal']
-        provTujOu = data['provinsi_tujuan']
-        kabpTujOu = data['kabupaten_tujuan']
-        kecmTujOu = data['kecamatan_tujuan']
-        alamTujOu = data['alamat_tujuan']
-        if nameCusto == '':
-            return {'Message':'Data Tidak Ada'}
-        else:
-            data = UserIn(nameCusto, tgglCusto, jeKelamin, jeIdentit, noIdentit, noTelepon, alamatKtp, suhuBadan, dftrGjala, gjalalain, kontatsta, provTujIn, kebpTujIn, kecmTujIn, alamTujIn, provTujOu, kabpTujOu, kecmTujOu, alamTujOu)
-            db.session.add(data)
-            db.session.commit()
-        return jsonify(data), 200
-    except Exception as e:
-        return {'error':str(e)}
+    if request.method == "POST":
+        try:
+            data = request.get_json()
+            nameCusto = data['nama_lengkap']
+            tgglCusto = data['tanggal_lahir']
+            jeKelamin = data['jenis_kelamin']
+            jeIdentit = data['jenis_identitas']
+            noIdentit = data['nomor_identitas']
+            noTelepon = data['no_telepon']
+            alamatKtp = data['alamat_sesuai_ktp']
+            suhuBadan = data['suhu_badan']
+            if data['tidak_ada_gejala'] == False:
+                dftrGjala = data['daftar_gejala']
+                gjalalain = data['gejala_lain']
+            else:
+                pass
+            kontatsta = data['is_kontak_positif']
+            provTujIn = data['provinsi_asal']
+            kebpTujIn = data['kabupaten_asal']
+            kecmTujIn = data['kecamatan_asal']
+            alamTujIn = data['alamat_asal']
+            provTujOu = data['provinsi_tujuan']
+            kabpTujOu = data['kabupaten_tujuan']
+            kecmTujOu = data['kecamatan_tujuan']
+            alamTujOu = data['alamat_tujuan']
+            if nameCusto == '':
+                return {'Message':'Data Tidak Ada'}
+            else:
+                db_data = UserIn(nameCusto, tgglCusto, jeKelamin, jeIdentit, noIdentit, noTelepon, alamatKtp, suhuBadan, dftrGjala, gjalalain, kontatsta, provTujIn, kebpTujIn, kecmTujIn, alamTujIn, provTujOu, kabpTujOu, kecmTujOu, alamTujOu)
+                db.session.add(db_data)
+                db.session.commit()
+            return jsonify(data), 200
+        except Exception as e:
+            return {'error':str(e)}
+    else:
+        try:
+            data = UserIn.query.order_by(UserIn.tgglCusto).all()
+            print(type(data))
+            dataJson = []
+            for i in range(len(data)):
+                dataDict = {
+                    'nama_lengkap': str(data[i].nameCusto),
+                    'tanggal_lahir': str(data[i].tgglCusto),
+                    'jenis_kelamin': str(data[i].jeKelamin),
+                    'jenis_identitas': str(data[i].jeIdentit),
+                    'nomor_identitas': str(data[i].noIdentit),
+                    'no_telepon': str(data[i].noTelepon),
+                    'alamat_sesuai_ktp': str(data[i].alamatKtp),
+                    'suhu_badan': str(data[i].suhuBadan),
+                    'tidak_ada_gejala': str(data[i].noTelepon),
+                    'daftar_gejala': str(data[i].dftrGjala),
+                    'gejala_lain': str(data[i].gjalalain),
+                    'is_kontak_positif': str(data[i].kontatsta),
+                    'provinsi_asal': str(data[i].provTujIn),
+                    'kabupaten_asal': str(data[i].kebpTujIn),
+                    'kecamatan_asal': str(data[i].kecmTujIn),
+                    'alamat_asal': str(data[i].alamTujIn),
+                    'provinsi_tujuan': str(data[i].provTujOu),
+                    'kabupaten_tujuan': str(data[i].kabpTujOu),
+                    'kecamatan_tujuan': str(data[i].kecmTujOu),
+                    'alamat_tujuan': str(data[i].alamTujOu)
+                }
+                dataJson.append(dataDict)
+            return jsonify(dataJson)
+        except Exception as e:
+            return {'error':str(e)}
 
-@app.route('/form-out',methods=['POST'])
+
+@app.route('/form-out',methods=['GET','POST'])
 def formOut():
-    try:
-        data = request.get_json(force=True)
-        nameCusto = data['nama_lengkap']
-        tgglCusto = data['tanggal_lahir']
-        jeKelamin = data['jenis_kelamin']
-        jeIdentit = data['jenis_identitas']
-        noIdentit = data['nomor_identitas']
-        noTelepon = data['no_telepon']
-        alamatKtp = data['alamat_sesuai_ktp']
-        suhuBadan = data['suhu_badan']
-        if data['tidak_ada_gejala'] == True:
-            dftrGjala = data['daftar_gejala']
-            gjalalain = data['gejala_lain']
-        else:
-            pass
-        kontatsta = data['is_kontak_positif']
-        provTujIn = data['provinsi_asal']
-        kebpTujIn = data['kabupaten_asal']
-        kecmTujIn = data['kecamatan_asal']
-        alamTujIn = data['alamat_asal']
-        provTujOu = data['provinsi_tujuan']
-        kabpTujOu = data['kabupaten_tujuan']
-        kecmTujOu = data['kecamatan_tujuan']
-        alamTujOu = data['alamat_tujuan']
-        if nameCusto == '':
-            return {'Message':'Data Tidak Ada'}
-        else:
-            data = UserOut(nameCusto, tgglCusto, jeKelamin, jeIdentit, noIdentit, noTelepon, alamatKtp, suhuBadan, dftrGjala, gjalalain, kontatsta, provTujIn, kebpTujIn, kecmTujIn, alamTujIn, provTujOu, kabpTujOu, kecmTujOu, alamTujOu)
-            db.session.add(data)
-            db.session.commit()
-        return jsonify(data), 200
-    except Exception as e:
-        return {'error':str(e)}
+    if request.method == "POST":
+        try:
+            data = request.get_json(force=True)
+            nameCusto = data['nama_lengkap']
+            tgglCusto = data['tanggal_lahir']
+            jeKelamin = data['jenis_kelamin']
+            jeIdentit = data['jenis_identitas']
+            noIdentit = data['nomor_identitas']
+            noTelepon = data['no_telepon']
+            alamatKtp = data['alamat_sesuai_ktp']
+            suhuBadan = data['suhu_badan']
+            if data['tidak_ada_gejala'] == True:
+                dftrGjala = data['daftar_gejala']
+                gjalalain = data['gejala_lain']
+            else:
+                pass
+            kontatsta = data['is_kontak_positif']
+            provTujIn = data['provinsi_asal']
+            kebpTujIn = data['kabupaten_asal']
+            kecmTujIn = data['kecamatan_asal']
+            alamTujIn = data['alamat_asal']
+            provTujOu = data['provinsi_tujuan']
+            kabpTujOu = data['kabupaten_tujuan']
+            kecmTujOu = data['kecamatan_tujuan']
+            alamTujOu = data['alamat_tujuan']
+            if nameCusto == '':
+                return {'Message':'Data Tidak Ada'}
+            else:
+                data = UserOut(nameCusto, tgglCusto, jeKelamin, jeIdentit, noIdentit, noTelepon, alamatKtp, suhuBadan, dftrGjala, gjalalain, kontatsta, provTujIn, kebpTujIn, kecmTujIn, alamTujIn, provTujOu, kabpTujOu, kecmTujOu, alamTujOu)
+                db.session.add(data)
+                db.session.commit()
+            return jsonify(data), 200
+        except Exception as e:
+            return {'error':str(e)}
+    else:
+        try:
+            data = UserOut.query.order_by(UserOut.tgglCusto).all()
+            print(type(data))
+            dataJson = []
+            for i in range(len(data)):
+                dataDict = {
+                    'nama_lengkap': str(data[i].nameCusto),
+                    'tanggal_lahir': str(data[i].tgglCusto),
+                    'jenis_kelamin': str(data[i].jeKelamin),
+                    'jenis_identitas': str(data[i].jeIdentit),
+                    'nomor_identitas': str(data[i].noIdentit),
+                    'no_telepon': str(data[i].noTelepon),
+                    'alamat_sesuai_ktp': str(data[i].alamatKtp),
+                    'suhu_badan': str(data[i].suhuBadan),
+                    'tidak_ada_gejala': str(data[i].noTelepon),
+                    'daftar_gejala': str(data[i].dftrGjala),
+                    'gejala_lain': str(data[i].gjalalain),
+                    'is_kontak_positif': str(data[i].kontatsta),
+                    'provinsi_asal': str(data[i].provTujIn),
+                    'kabupaten_asal': str(data[i].kebpTujIn),
+                    'kecamatan_asal': str(data[i].kecmTujIn),
+                    'alamat_asal': str(data[i].alamTujIn),
+                    'provinsi_tujuan': str(data[i].provTujOu),
+                    'kabupaten_tujuan': str(data[i].kabpTujOu),
+                    'kecamatan_tujuan': str(data[i].kecmTujOu),
+                    'alamat_tujuan': str(data[i].alamTujOu)
+                }
+                dataJson.append(dataDict)
+            return jsonify(dataJson)
+        except Exception as e:
+            return {'error':str(e)}
 
 @app.route('/rekomendasi-tempat',methods=['GET','POST'])
 def rekomendasitempat():

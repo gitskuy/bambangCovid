@@ -14,7 +14,7 @@ db_pass = "ebc3f1ac8d6de628c643fe9440f03ffe691918d34784868f807d31cf1da09efd"
 connection = psycopg2.connect(dbname=db_name, user=db_user, password=db_pass, host=db_host)
 cursor = connection.cursor()
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://vputlrxzjcwffs:ebc3f1ac8d6de628c643fe9440f03ffe691918d34784868f807d31cf1da09efd@ec2-34-225-103-117.compute-1.amazonaws.com:5432/d1ati88i3hiodn'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://vputlrxzjcwffs:ebc3f1ac8d6de628c643fe9440f03ffe691918d34784868f807d31cf1da09efd@ec2-34-225-103-117.compute-1.amazonaws.com:5432/d1ati88i3hiodn'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 api = Api(app)

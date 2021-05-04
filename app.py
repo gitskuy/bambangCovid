@@ -21,6 +21,16 @@ api = Api(app)
 
 db=SQLAlchemy(app)
 
+class login(db.Model):
+    __tablename__='Login'
+
+    username = db.Column(db.String, primary_key=True)
+    password = db.Column(db.String)
+
+    def __init__(self, username, password):
+        self.username = username
+        self.password = password
+
 class UserIn(db.Model):
     __tablename__='UserIn'
 
@@ -64,9 +74,6 @@ class UserIn(db.Model):
         self.kabpTujOu = kabpTujOu
         self.kecmTujOu = kecmTujOu
         self.alamTujOu = alamTujOu
-    
-    # def __repr__(self):
-    #     return '%s/%s/%s' % (self.nameCusto, self.tgglCusto, self.jeKelamin)
 
 class UserOut(db.Model):
     __tablename__='UserOut'
@@ -120,16 +127,14 @@ class HelloWorld(Resource):
 
 @app.route('/login', methods = ["GET", "POST"])
 def login():
-    if request.method == "GET":  
-        un = request.form['Username']
-        pw = request.form['Password']
-
-        cursor = connection.cursor()
-        query1 = "SELECT Username, Password From Users WHERE Username = {un} AND Password = {pw}".format(un = UN, pw = PW)
-
-        rows = cursor.excecute(query1)
-        rows = rows.fetchall()
-        if len(rows) == 1:
+    if request.method == "POST":  
+        data = request.get_json(force=True)
+        nameCusto = data['un']
+        tgglCusto = data['pw']
+            
+        if nameCusto=="admin" and tgglCusto=="adminmantap":
+            return{'Message':'Login Sukses'}
+        if nameCusto=="adminteam" and tgglCusto=="adminmantap":
             return{'Message':'Login Sukses'}
         else:
             return{'Message':'Login Gagal'}
@@ -138,65 +143,44 @@ def login():
 def logout():
     return {'Message':'Logout Sukses'}
 
-
-@app.route("/search-in", methods=['GET','POST'])
-def searchIn():
-    if request.method == "GET":  
-        noIden = request.form['noIdentit']
-        try:
-            cursor.execute('SELECT * FROM public."UserIn"',(noIden))
-        except Exception as e:
-            conn.rollback()
-        else:
-            conn.commit()
-        data = cursor.fetchall()
-        return jsonify(data), 200
-    return {"Message":"Data Tidak Ditemukan"}
-
 @app.route("/edit-rekomendasi", methods=['GET','POST'])
 def editRekomendasi():
-    if request.method == "GET":  
-        namaTmpt = request.args.get('nama_tempat')
-        provinsi = request.args.get('provinsi')
-        kabupatn = request.args.get('kabupaten')
-        kecamatn = request.args.get('kecamatan')
-        alamat = request.args.get('alamat')
-        jenis = request.args.get('jenis')
-        telepon = request.args.get('telepon')
-        ketersed = request.args.get('ketersediaan_ruang')
-        
+    data = request.get_json()
+    namaTmpt = data['nama_tempat']
+    provinsi = data['provinsi']
+    kabupatn = data['kabupaten')
+    kecamatn = data['kecamatan')
+    alamat = data['alamat')
+    jenis = data['jenis')
+    telepon = data['telepon')
+    ketersed = data['ketersediaan_ruang')
 
-        data = (namaTmpt, provinsi, kabupatn, kecamatn, alamat, jenis, telepon, ketersed)
-        try:
-            #conn = .... 
-            #cursor = conn.cursor()
-            #cursor.execute(ini quernya apa.... , data)
-            # accept the changes
-            conn.commit()
+    try:
+        newtitle = request.form.get("newtitle")
+        oldtitle = request.form.get("oldtitle")
+        book = Book.query.filter_by(title=oldtitle).first()
+        book.title = newtitle
+        db.session.commit()
+    except Error as error:
+        return {"Message":}
 
-        except Error as error:
-            print(error)
+@app.route("/search", methods=['GET','POST'])
+def searchOut():  
+    data = request.get_json()
+    t_input = data['nomor_identitas']
+    s = 'SELECT * FROM public."UserIn" WHERE "noIdentit" LIKE ' 
+    s += "'%t_input%'"
+    s += "UNION ALL"
+    s += 'SELECT * FROM public."UserOut" WHERE "noIdentit" LIKE '
+    s += "'%t_input%'"
+    try:
+        cursor.execute(s, [t_input])
+        dbRow = cursor.fetchall()
+    except psycopg2.Error as e:
+        t_message = "Postgres Database error: " + e + "/n SQL: " + s
+        return {"Massage":t_input}
+    cursor.close
 
-        finally:
-            cursor.close()
-            conn.close()
-        return {"Message":"Data Di Update"}
-    return {"Message":"Error"}
-
-
-@app.route("/search-out", methods=['GET','POST'])
-def searchOut():
-    if request.method == "POST":  
-        noIden = request.form['noIdentit']
-        try:
-            cursor.execute("",(noIden))
-        except Exception as e:
-            conn.rollback()
-        else:
-            conn.commit()
-        data = cursor.fetchall()
-        return {"Message":"Data Ditemukan"}
-    return {"Message":"Data Tidak Ditemukan"}
 
 @app.route('/form-in',methods=['GET', 'POST'])
 def formIn():

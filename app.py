@@ -2,6 +2,7 @@ from flask import Flask, jsonify, request
 from flask_restful import reqparse, abort, Api, Resource
 from flask_sqlalchemy import SQLAlchemy
 import psycopg2
+import datetime
 
 
 app = Flask(__name__)
@@ -14,12 +15,14 @@ db_pass = "ebc3f1ac8d6de628c643fe9440f03ffe691918d34784868f807d31cf1da09efd"
 connection = psycopg2.connect(dbname=db_name, user=db_user, password=db_pass, host=db_host)
 cursor = connection.cursor()
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://vputlrxzjcwffs:ebc3f1ac8d6de628c643fe9440f03ffe691918d34784868f807d31cf1da09efd@ec2-34-225-103-117.compute-1.amazonaws.com:5432/d1ati88i3hiodn'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://vputlrxzjcwffs:ebc3f1ac8d6de628c643fe9440f03ffe691918d34784868f807d31cf1da09efd@ec2-34-225-103-117.compute-1.amazonaws.com:5432/d1ati88i3hiodn'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 api = Api(app)
 
 db=SQLAlchemy(app)
+
+dateX = datetime.datetime.now()
 
 class login(db.Model):
     __tablename__='Login'
@@ -53,8 +56,11 @@ class UserIn(db.Model):
     kabpTujOu = db.Column(db.String)
     kecmTujOu = db.Column(db.String)
     alamTujOu = db.Column(db.String)
+    tangMskIn = db.Column(db.String)
+    statusPer = db.Column(db.String)
+    
 
-    def __init__(self, nameCusto, tgglCusto, jeKelamin, jeIdentit, noIdentit, noTelepon, alamatKtp, suhuBadan, dftrGjala, gjalalain, kontatsta, provTujIn, kebpTujIn, kecmTujIn, alamTujIn, provTujOu, kabpTujOu, kecmTujOu, alamTujOu):
+    def __init__(self, nameCusto, tgglCusto, jeKelamin, jeIdentit, noIdentit, noTelepon, alamatKtp, suhuBadan, dftrGjala, gjalalain, kontatsta, provTujIn, kebpTujIn, kecmTujIn, alamTujIn, provTujOu, kabpTujOu, kecmTujOu, alamTujOu, tangMskIn, statusPer):
         self.nameCusto = nameCusto
         self.tgglCusto = tgglCusto
         self.jeKelamin = jeKelamin
@@ -74,6 +80,8 @@ class UserIn(db.Model):
         self.kabpTujOu = kabpTujOu
         self.kecmTujOu = kecmTujOu
         self.alamTujOu = alamTujOu
+        self.tangMskIn = tangMskIn
+        self.statusPer = statusPer
 
 class UserOut(db.Model):
     __tablename__='UserOut'
@@ -97,8 +105,10 @@ class UserOut(db.Model):
     kabpTujOu = db.Column(db.String)
     kecmTujOu = db.Column(db.String)
     alamTujOu = db.Column(db.String)
+    tangMskOu = db.Column(db.String)
+    statusPer = db.Column(db.String)
 
-    def __init__(self, nameCusto, tgglCusto, jeKelamin, jeIdentit, noIdentit, noTelepon, alamatKtp, suhuBadan, dftrGjala, gjalalain, kontatsta, provTujIn, kebpTujIn, kecmTujIn, alamTujIn, provTujOu, kabpTujOu, kecmTujOu, alamTujOu):
+    def __init__(self, nameCusto, tgglCusto, jeKelamin, jeIdentit, noIdentit, noTelepon, alamatKtp, suhuBadan, dftrGjala, gjalalain, kontatsta, provTujIn, kebpTujIn, kecmTujIn, alamTujIn, provTujOu, kabpTujOu, kecmTujOu, alamTujOu, tangMskOu, statusPer):
         self.nameCusto = nameCusto
         self.tgglCusto = tgglCusto
         self.jeKelamin = jeKelamin
@@ -118,6 +128,8 @@ class UserOut(db.Model):
         self.kabpTujOu = kabpTujOu
         self.kecmTujOu = kecmTujOu
         self.alamTujOu = alamTujOu
+        self.tangMskOu = tangMskOu
+        self.statusPer = statusPer
 
 
 class HelloWorld(Resource):
@@ -162,25 +174,25 @@ def editRekomendasi():
         book.title = newtitle
         db.session.commit()
     except Error as error:
-        return {"Message":}
+        return {"Message": 'Error gan'}
 
 @app.route("/search", methods=['GET','POST'])
 def searchOut():  
     data = request.get_json()
     t_input = data['nomor_identitas']
+    print(t_input)
     s = 'SELECT * FROM public."UserIn" WHERE "noIdentit" LIKE ' 
     s += "'%t_input%'"
     s += "UNION ALL"
     s += 'SELECT * FROM public."UserOut" WHERE "noIdentit" LIKE '
     s += "'%t_input%'"
     try:
-        cursor.execute(s, [t_input])
+        cursor.execute(s, (tuple(t_input)))
         dbRow = cursor.fetchall()
     except psycopg2.Error as e:
         t_message = "Postgres Database error: " + e + "/n SQL: " + s
         return {"Massage":t_input}
     cursor.close
-
 
 @app.route('/form-in',methods=['GET', 'POST'])
 def formIn():
@@ -198,8 +210,9 @@ def formIn():
             if data['tidak_ada_gejala'] == False:
                 dftrGjala = data['daftar_gejala']
                 gjalalain = data['gejala_lain']
+                statusPer = 'Karantina'
             else:
-                pass
+                statusPer = 'Tidak Karantina'
             kontatsta = data['is_kontak_positif']
             provTujIn = data['provinsi_asal']
             kebpTujIn = data['kabupaten_asal']
@@ -209,10 +222,11 @@ def formIn():
             kabpTujOu = data['kabupaten_tujuan']
             kecmTujOu = data['kecamatan_tujuan']
             alamTujOu = data['alamat_tujuan']
+            tangMskIn = dateX.strftime("%d-%m-%Y")
             if nameCusto == '':
                 return {'Message':'Data Tidak Ada'}
             else:
-                db_data = UserIn(nameCusto, tgglCusto, jeKelamin, jeIdentit, noIdentit, noTelepon, alamatKtp, suhuBadan, dftrGjala, gjalalain, kontatsta, provTujIn, kebpTujIn, kecmTujIn, alamTujIn, provTujOu, kabpTujOu, kecmTujOu, alamTujOu)
+                db_data = UserIn(nameCusto, tgglCusto, jeKelamin, jeIdentit, noIdentit, noTelepon, alamatKtp, suhuBadan, dftrGjala, gjalalain, kontatsta, provTujIn, kebpTujIn, kecmTujIn, alamTujIn, provTujOu, kabpTujOu, kecmTujOu, alamTujOu, tangMskIn, statusPer)
                 db.session.add(db_data)
                 db.session.commit()
             return jsonify(data), 200
@@ -268,8 +282,9 @@ def formOut():
             if data['tidak_ada_gejala'] == True:
                 dftrGjala = data['daftar_gejala']
                 gjalalain = data['gejala_lain']
+                statusPer = 'Karantina'
             else:
-                pass
+                statusPer = 'Tidak Karantina'
             kontatsta = data['is_kontak_positif']
             provTujIn = data['provinsi_asal']
             kebpTujIn = data['kabupaten_asal']
@@ -279,10 +294,11 @@ def formOut():
             kabpTujOu = data['kabupaten_tujuan']
             kecmTujOu = data['kecamatan_tujuan']
             alamTujOu = data['alamat_tujuan']
+            tangMskOu = dateX.strftime("%d-%m-%Y")
             if nameCusto == '':
                 return {'Message':'Data Tidak Ada'}
             else:
-                data = UserOut(nameCusto, tgglCusto, jeKelamin, jeIdentit, noIdentit, noTelepon, alamatKtp, suhuBadan, dftrGjala, gjalalain, kontatsta, provTujIn, kebpTujIn, kecmTujIn, alamTujIn, provTujOu, kabpTujOu, kecmTujOu, alamTujOu)
+                data = UserOut(nameCusto, tgglCusto, jeKelamin, jeIdentit, noIdentit, noTelepon, alamatKtp, suhuBadan, dftrGjala, gjalalain, kontatsta, provTujIn, kebpTujIn, kecmTujIn, alamTujIn, provTujOu, kabpTujOu, kecmTujOu, alamTujOu, tangMskOu, statusPer)
                 db.session.add(data)
                 db.session.commit()
             return jsonify(data), 200

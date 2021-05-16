@@ -174,7 +174,11 @@ def editRekomendasi():
         book.title = newtitle
         db.session.commit()
     except Error as error:
+<<<<<<< HEAD
         return {"Message": 'Error gan'}
+=======
+        return {"Message":'Error gan'}
+>>>>>>> a2af76520c3880e8b4e84030918f7da79546d0d4
 
 @app.route("/search", methods=['GET','POST'])
 def searchOut():  

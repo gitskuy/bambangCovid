@@ -340,7 +340,7 @@ def formOut():
                     'kecamatan_tujuan': str(data[i].kecmTujOu),
                     'alamat_tujuan': str(data[i].alamTujOu),
                     'tanggal_keluar': str(data[i].tangMskOu),
-                    'status_person': str(data[i].statusPer)
+                    'status_person': str(data[i].statusPer),
                     'rekomendasi_karantina': str(data[i].karanName)
                 }
                 dataJson.append(dataDict)
@@ -363,8 +363,6 @@ def rekomendasitempat():
             return {'Message':'Success'}
         except Exception as e:
             return {'error':str(e)}
-    if request.method == 'PATCH':
-
     else:
         try:
             data = request.get_json(force=True)

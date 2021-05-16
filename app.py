@@ -143,10 +143,9 @@ class HelloWorld(Resource):
 @app.route('/login', methods = ["GET", "POST"])
 def login():
     if request.method == "POST":  
-        data = request.get_json(force=True)
+        data = request.get_json()
         nameCusto = data['un']
         tgglCusto = data['pw']
-            
         if nameCusto=="admin" and tgglCusto=="adminmantap":
             return{'Message':'Login Sukses'}
         if nameCusto=="adminteam" and tgglCusto=="adminmantap":

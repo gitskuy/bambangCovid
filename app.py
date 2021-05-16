@@ -58,7 +58,7 @@ class UserIn(db.Model):
     alamTujOu = db.Column(db.String)
     tangMskIn = db.Column(db.String)
     statusPer = db.Column(db.String)
-    karanName = db.Column(db.String)    
+    karanName = db.Column(db.Text())    
 
     def __init__(self, nameCusto, tgglCusto, jeKelamin, jeIdentit, noIdentit, noTelepon, alamatKtp, suhuBadan, dftrGjala, gjalalain, kontatsta, provTujIn, kebpTujIn, kecmTujIn, alamTujIn, provTujOu, kabpTujOu, kecmTujOu, alamTujOu, tangMskIn, statusPer, karanName):
         self.nameCusto = nameCusto
@@ -108,7 +108,7 @@ class UserOut(db.Model):
     alamTujOu = db.Column(db.String)
     tangMskOu = db.Column(db.String)
     statusPer = db.Column(db.String)
-    karanName = db.Column(db.String)
+    karanName = db.Column(db.Text())
 
     def __init__(self, nameCusto, tgglCusto, jeKelamin, jeIdentit, noIdentit, noTelepon, alamatKtp, suhuBadan, dftrGjala, gjalalain, kontatsta, provTujIn, kebpTujIn, kecmTujIn, alamTujIn, provTujOu, kabpTujOu, kecmTujOu, alamTujOu, tangMskOu, statusPer, karanName):
         self.nameCusto = nameCusto
@@ -133,7 +133,6 @@ class UserOut(db.Model):
         self.tangMskOu = tangMskOu
         self.statusPer = statusPer
         self.karanName = karanName
-
 
 class HelloWorld(Resource):
     def get(self):

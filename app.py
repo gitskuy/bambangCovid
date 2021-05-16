@@ -34,6 +34,28 @@ class login(db.Model):
         self.username = username
         self.password = password
 
+class rekTempat(db.Model):
+    __tablename__='RekTempat'
+
+    namaTmpt = db.Column(db.String, primary_key=True)
+    provinsi = db.Column(db.Text())
+    kabupatn = db.Column(db.Text())
+    kecamatn = db.Column(db.Text())
+    alamat = db.Column(db.Text())
+    jenis = db.Column(db.Text())
+    telepon = db.Column(db.Integer) 
+    ketersed = db.Column(db.Integer) 
+
+    def __init__(self, namaTmpt, provinsi, kabupatn, kecamatn, alamat, jenis, telepon, ketersed):
+        self.namaTmpt = namaTmpt
+        self.provinsi = provinsi
+        self.kabupatn = kabuptn
+        self.kecamatn = kecamatn
+        self.alamat = alamat
+        self.jenis = jenis
+        self.telepon = telepon
+        self.ketersed = ketersed
+
 class UserIn(db.Model):
     __tablename__='UserIn'
 
@@ -275,7 +297,7 @@ def formIn():
 def formOut():
     if request.method == "POST":
         try:
-            data = request.get_json(force=True)
+            data = request.get_json()
             nameCusto = data['nama_lengkap']
             tgglCusto = data['tanggal_lahir']
             jeKelamin = data['jenis_kelamin']
@@ -307,13 +329,13 @@ def formOut():
                 data = UserOut(nameCusto, tgglCusto, jeKelamin, jeIdentit, noIdentit, noTelepon, alamatKtp, suhuBadan, dftrGjala, gjalalain, kontatsta, provTujIn, kebpTujIn, kecmTujIn, alamTujIn, provTujOu, kabpTujOu, kecmTujOu, alamTujOu, tangMskOu, statusPer, karanName)
                 db.session.add(data)
                 db.session.commit()
+                print(data)
             return jsonify(data), 200
         except Exception as e:
             return {'error':str(e)}
     else:
         try:
             data = UserOut.query.order_by(UserOut.tgglCusto).all()
-            print(type(data))
             dataJson = []
             for i in range(len(data)):
                 dataDict = {
@@ -350,15 +372,21 @@ def formOut():
 def rekomendasitempat():
     if request.method == 'GET':
         try:
-            namaTmpt = request.args.get('nama_tempat')
-            provinsi = request.args.get('provinsi')
-            kabupatn = request.args.get('kabupaten')
-            kecamatn = request.args.get('kecamatan')
-            alamat = request.args.get('alamat')
-            jenis = request.args.get('jenis')
-            telepon = request.args.get('telepon')
-            ketersed = request.args.get('ketersediaan_ruang')
-            return {'Message':'Success'}
+            data = rekTempat.query.order_by(rekTempat.namaTmpt).all()
+            dataJson = []
+            for i in range(len(data)):
+                dataDict = {
+                    'nama_tempat': str(data[i].namaTmpt),
+                    'provinsi': str(data[i].provinsi),
+                    'kabupaten': str(data[i].kabupatn),
+                    'kecamatan': str(data[i].kecamatn),
+                    'alamat': str(data[i].alamat),
+                    'jenis': str(data[i].jenis),
+                    'telepon': str(data[i].telepon),
+                    'ketersediaan_ruang': str(data[i].ketersed)
+                }
+                dataJson.append(dataDict)
+            return jsonify(dataJson)
         except Exception as e:
             return {'error':str(e)}
     else:

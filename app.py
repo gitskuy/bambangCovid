@@ -58,9 +58,9 @@ class UserIn(db.Model):
     alamTujOu = db.Column(db.String)
     tangMskIn = db.Column(db.String)
     statusPer = db.Column(db.String)
-    
+    karanName = db.Column(db.String)    
 
-    def __init__(self, nameCusto, tgglCusto, jeKelamin, jeIdentit, noIdentit, noTelepon, alamatKtp, suhuBadan, dftrGjala, gjalalain, kontatsta, provTujIn, kebpTujIn, kecmTujIn, alamTujIn, provTujOu, kabpTujOu, kecmTujOu, alamTujOu, tangMskIn, statusPer):
+    def __init__(self, nameCusto, tgglCusto, jeKelamin, jeIdentit, noIdentit, noTelepon, alamatKtp, suhuBadan, dftrGjala, gjalalain, kontatsta, provTujIn, kebpTujIn, kecmTujIn, alamTujIn, provTujOu, kabpTujOu, kecmTujOu, alamTujOu, tangMskIn, statusPer, karanName):
         self.nameCusto = nameCusto
         self.tgglCusto = tgglCusto
         self.jeKelamin = jeKelamin
@@ -82,6 +82,7 @@ class UserIn(db.Model):
         self.alamTujOu = alamTujOu
         self.tangMskIn = tangMskIn
         self.statusPer = statusPer
+        self.karanName = karanName
 
 class UserOut(db.Model):
     __tablename__='UserOut'
@@ -107,8 +108,9 @@ class UserOut(db.Model):
     alamTujOu = db.Column(db.String)
     tangMskOu = db.Column(db.String)
     statusPer = db.Column(db.String)
+    karanName = db.Column(db.String)
 
-    def __init__(self, nameCusto, tgglCusto, jeKelamin, jeIdentit, noIdentit, noTelepon, alamatKtp, suhuBadan, dftrGjala, gjalalain, kontatsta, provTujIn, kebpTujIn, kecmTujIn, alamTujIn, provTujOu, kabpTujOu, kecmTujOu, alamTujOu, tangMskOu, statusPer):
+    def __init__(self, nameCusto, tgglCusto, jeKelamin, jeIdentit, noIdentit, noTelepon, alamatKtp, suhuBadan, dftrGjala, gjalalain, kontatsta, provTujIn, kebpTujIn, kecmTujIn, alamTujIn, provTujOu, kabpTujOu, kecmTujOu, alamTujOu, tangMskOu, statusPer, karanName):
         self.nameCusto = nameCusto
         self.tgglCusto = tgglCusto
         self.jeKelamin = jeKelamin
@@ -130,6 +132,7 @@ class UserOut(db.Model):
         self.alamTujOu = alamTujOu
         self.tangMskOu = tangMskOu
         self.statusPer = statusPer
+        self.karanName = karanName
 
 
 class HelloWorld(Resource):
@@ -223,10 +226,11 @@ def formIn():
             kecmTujOu = data['kecamatan_tujuan']
             alamTujOu = data['alamat_tujuan']
             tangMskIn = dateX.strftime("%d-%m-%Y")
+            karanName = data['rekomendasi_karantina']
             if nameCusto == '':
                 return {'Message':'Data Tidak Ada'}
             else:
-                db_data = UserIn(nameCusto, tgglCusto, jeKelamin, jeIdentit, noIdentit, noTelepon, alamatKtp, suhuBadan, dftrGjala, gjalalain, kontatsta, provTujIn, kebpTujIn, kecmTujIn, alamTujIn, provTujOu, kabpTujOu, kecmTujOu, alamTujOu, tangMskIn, statusPer)
+                db_data = UserIn(nameCusto, tgglCusto, jeKelamin, jeIdentit, noIdentit, noTelepon, alamatKtp, suhuBadan, dftrGjala, gjalalain, kontatsta, provTujIn, kebpTujIn, kecmTujIn, alamTujIn, provTujOu, kabpTujOu, kecmTujOu, alamTujOu, tangMskIn, statusPer, karanName)
                 db.session.add(db_data)
                 db.session.commit()
             return jsonify(data), 200
@@ -260,7 +264,8 @@ def formIn():
                     'kecamatan_tujuan': str(data[i].kecmTujOu),
                     'alamat_tujuan': str(data[i].alamTujOu),
                     'tanggal_masuk': str(data[i].tangMskIn),
-                    'status_person': str(data[i].statusPer)
+                    'status_person': str(data[i].statusPer),
+                    'rekomendasi_karantina': str(data[i].karanName)
                 }
                 dataJson.append(dataDict)
             return jsonify(dataJson)
@@ -297,10 +302,11 @@ def formOut():
             kecmTujOu = data['kecamatan_tujuan']
             alamTujOu = data['alamat_tujuan']
             tangMskOu = dateX.strftime("%d-%m-%Y")
+            karanName = data['rekomendasi_karantina']
             if nameCusto == '':
                 return {'Message':'Data Tidak Ada'}
             else:
-                data = UserOut(nameCusto, tgglCusto, jeKelamin, jeIdentit, noIdentit, noTelepon, alamatKtp, suhuBadan, dftrGjala, gjalalain, kontatsta, provTujIn, kebpTujIn, kecmTujIn, alamTujIn, provTujOu, kabpTujOu, kecmTujOu, alamTujOu, tangMskOu, statusPer)
+                data = UserOut(nameCusto, tgglCusto, jeKelamin, jeIdentit, noIdentit, noTelepon, alamatKtp, suhuBadan, dftrGjala, gjalalain, kontatsta, provTujIn, kebpTujIn, kecmTujIn, alamTujIn, provTujOu, kabpTujOu, kecmTujOu, alamTujOu, tangMskOu, statusPer, karanName)
                 db.session.add(data)
                 db.session.commit()
             return jsonify(data), 200
@@ -335,6 +341,7 @@ def formOut():
                     'alamat_tujuan': str(data[i].alamTujOu),
                     'tanggal_keluar': str(data[i].tangMskOu),
                     'status_person': str(data[i].statusPer)
+                    'rekomendasi_karantina': str(data[i].karanName)
                 }
                 dataJson.append(dataDict)
             return jsonify(dataJson)
@@ -356,6 +363,8 @@ def rekomendasitempat():
             return {'Message':'Success'}
         except Exception as e:
             return {'error':str(e)}
+    if request.method == 'PATCH':
+
     else:
         try:
             data = request.get_json(force=True)

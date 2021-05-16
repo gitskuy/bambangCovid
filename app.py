@@ -258,8 +258,8 @@ def formIn():
                     'provinsi_tujuan': str(data[i].provTujOu),
                     'kabupaten_tujuan': str(data[i].kabpTujOu),
                     'kecamatan_tujuan': str(data[i].kecmTujOu),
-                    'alamat_tujuan': str(data[i].alamTujOu)
-                    'tanggal_masuk': str(data[i].tangMskIn)
+                    'alamat_tujuan': str(data[i].alamTujOu),
+                    'tanggal_masuk': str(data[i].tangMskIn),
                     'status_person': str(data[i].statusPer)
                 }
                 dataJson.append(dataDict)
@@ -281,7 +281,7 @@ def formOut():
             noTelepon = data['no_telepon']
             alamatKtp = data['alamat_sesuai_ktp']
             suhuBadan = data['suhu_badan']
-            if data['tidak_ada_gejala'] == True:
+            if data['tidak_ada_gejala'] == False:
                 dftrGjala = data['daftar_gejala']
                 gjalalain = data['gejala_lain']
                 statusPer = 'Karantina'
@@ -332,8 +332,8 @@ def formOut():
                     'provinsi_tujuan': str(data[i].provTujOu),
                     'kabupaten_tujuan': str(data[i].kabpTujOu),
                     'kecamatan_tujuan': str(data[i].kecmTujOu),
-                    'alamat_tujuan': str(data[i].alamTujOu)
-                    'tanggal_keluar': str(data[i].tangMskOu)
+                    'alamat_tujuan': str(data[i].alamTujOu),
+                    'tanggal_keluar': str(data[i].tangMskOu),
                     'status_person': str(data[i].statusPer)
                 }
                 dataJson.append(dataDict)

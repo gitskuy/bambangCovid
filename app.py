@@ -174,11 +174,7 @@ def editRekomendasi():
         book.title = newtitle
         db.session.commit()
     except Error as error:
-<<<<<<< HEAD
         return {"Message": 'Error gan'}
-=======
-        return {"Message":'Error gan'}
->>>>>>> a2af76520c3880e8b4e84030918f7da79546d0d4
 
 @app.route("/search", methods=['GET','POST'])
 def searchOut():  
@@ -263,6 +259,8 @@ def formIn():
                     'kabupaten_tujuan': str(data[i].kabpTujOu),
                     'kecamatan_tujuan': str(data[i].kecmTujOu),
                     'alamat_tujuan': str(data[i].alamTujOu)
+                    'tanggal_masuk': str(data[i].tangMskIn)
+                    'status_person': str(data[i].statusPer)
                 }
                 dataJson.append(dataDict)
             return jsonify(dataJson)
@@ -335,6 +333,8 @@ def formOut():
                     'kabupaten_tujuan': str(data[i].kabpTujOu),
                     'kecamatan_tujuan': str(data[i].kecmTujOu),
                     'alamat_tujuan': str(data[i].alamTujOu)
+                    'tanggal_keluar': str(data[i].tangMskOu)
+                    'status_person': str(data[i].statusPer)
                 }
                 dataJson.append(dataDict)
             return jsonify(dataJson)

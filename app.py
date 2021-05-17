@@ -210,20 +210,45 @@ def editRekomendasi():
 @app.route("/search", methods=['GET','POST'])
 def searchOut():  
     data = request.get_json()
-    t_input = data['nomor_identitas']
-    print(t_input)
-    s = 'SELECT * FROM public."UserIn" WHERE "noIdentit" LIKE ' 
-    s += "'%t_input%'"
-    s += "UNION ALL"
-    s += 'SELECT * FROM public."UserOut" WHERE "noIdentit" LIKE '
-    s += "'%t_input%'"
+    noIdentit = data['nomor_identitas']
+    data = UserOut.query.filter_by(noIdentit=noIdentit).all()
     try:
-        cursor.execute(s, (tuple(t_input)))
-        dbRow = cursor.fetchall()
-    except psycopg2.Error as e:
-        t_message = "Postgres Database error: " + e + "/n SQL: " + s
-        return {"Massage":t_input}
-    cursor.close
+        print(data)
+        if not data:
+            return {'Message': "User Not Found"}
+        
+        dataJson = []
+        for i in range(len(data)):
+                dataDict = {
+                    'nama_lengkap': str(data[i].nameCusto),
+                    'tanggal_lahir': str(data[i].tgglCusto),
+                    'jenis_kelamin': str(data[i].jeKelamin),
+                    'jenis_identitas': str(data[i].jeIdentit),
+                    'nomor_identitas': str(data[i].noIdentit),
+                    'no_telepon': str(data[i].noTelepon),
+                    'alamat_sesuai_ktp': str(data[i].alamatKtp),
+                    'suhu_badan': str(data[i].suhuBadan),
+                    'tidak_ada_gejala': str(data[i].noTelepon),
+                    'daftar_gejala': str(data[i].dftrGjala),
+                    'gejala_lain': str(data[i].gjalalain),
+                    'is_kontak_positif': str(data[i].kontatsta),
+                    'provinsi_asal': str(data[i].provTujIn),
+                    'kabupaten_asal': str(data[i].kebpTujIn),
+                    'kecamatan_asal': str(data[i].kecmTujIn),
+                    'alamat_asal': str(data[i].alamTujIn),
+                    'provinsi_tujuan': str(data[i].provTujOu),
+                    'kabupaten_tujuan': str(data[i].kabpTujOu),
+                    'kecamatan_tujuan': str(data[i].kecmTujOu),
+                    'alamat_tujuan': str(data[i].alamTujOu),
+                    'tanggal_keluar': str(data[i].tangMskOu),
+                    'status_person': str(data[i].statusPer),
+                    'rekomendasi_karantina': str(data[i].karanName)
+                }
+                dataJson.append(dataDict)
+        return jsonify(dataJson)
+    except Exception as e:
+            return {'error':str(e)}
+
 
 @app.route('/form-in',methods=['GET', 'POST'])
 def formIn():

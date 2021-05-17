@@ -191,13 +191,21 @@ def editRekomendasi():
     ketersed = data['ketersediaan_ruang']
 
     try:
-        newtitle = request.form.get("newtitle")
-        oldtitle = request.form.get("oldtitle")
-        book = Book.query.filter_by(title=oldtitle).first()
-        book.title = newtitle
+        tempat = rekTempat.query.filter_by(namaTmpt=namaTmpt,provinsi=provinsi).first()
+        if tempat == None:
+            return {'Message': "data Not found"}
+        tempat.namaTmpt = namaTmpt
+        tempat.provinsi = provinsi
+        tempat.kabupatn = kabupatn
+        tempat.kecamatn = kecamatn
+        tempat.alamat = alamat
+        tempat.jenis = jenis
+        tempat.telepon = telepon
+        tempat.ketersed = ketersed
         db.session.commit()
-    except Error as error:
-        return {"Message": 'Error gan'}
+        return {'Message': "Data has been updated"}
+    except Exception as e:
+            return {'error':str(e)}
 
 @app.route("/search", methods=['GET','POST'])
 def searchOut():  
@@ -389,8 +397,33 @@ def rekomendasitempat():
             return jsonify(dataJson)
         except Exception as e:
             return {'error':str(e)}
-    # if request.method == 'PUT':
-    #     req = request.get_json()
+    if request.method == 'PUT':
+        data = request.get_json()
+        namaTmpt = data['nama_tempat']
+        provinsi = data['provinsi']
+        kabupatn = data['kabupaten']
+        kecamatn = data['kecamatan']
+        alamat = data['alamat']
+        jenis = data['jenis']
+        telepon = data['telepon']
+        ketersed = data['ketersediaan_ruang']
+
+        try:
+            tempat = rekTempat.query.filter_by(namaTmpt=namaTmpt,provinsi=provinsi).first()
+            if tempat == None:
+                return {'Message': "data Not found"}
+            tempat.namaTmpt = namaTmpt
+            tempat.provinsi = provinsi
+            tempat.kabupatn = kabupatn
+            tempat.kecamatn = kecamatn
+            tempat.alamat = alamat
+            tempat.jenis = jenis
+            tempat.telepon = telepon
+            tempat.ketersed = ketersed
+            db.session.commit()
+            return {'Message': "Data has been updated"}
+        except Exception as e:
+                return {'error':str(e)}
     else:
         try:
             data = request.get_json(force=True)

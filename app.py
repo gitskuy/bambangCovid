@@ -438,7 +438,7 @@ def rekomendasitempat():
                     'ketersediaan_ruang': str(data[i].ketersed)
                 }
                 dataJson.append(dataDict)
-            return {"Message":"Sukses"}, 200
+            return jsonify(dataJson)
         except Exception as e:
             return {'error':str(e)}
     if request.method == 'PUT':
@@ -486,7 +486,7 @@ def rekomendasitempat():
                 db.session.add(data)
                 db.session.commit()
                 print(data)
-            return jsonify(data), 200
+            return {"Message":"Sukses"}, 200
         except Exception as e:
             return {'error':str(e)}
         

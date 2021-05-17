@@ -260,12 +260,12 @@ def searchOut():
                     'kabupaten_tujuan': str(data[i].kabpTujOu),
                     'kecamatan_tujuan': str(data[i].kecmTujOu),
                     'alamat_tujuan': str(data[i].alamTujOu),
-                    'tanggal_keluar': str(data[i].tangMskIn),
+                    'tanggal_masuk': str(data[i].tangMskIn),
                     'status_person': str(data[i].statusPer),
                     'rekomendasi_karantina': str(data[i].karanName)
                 }
                 dataJson.append(dataDict)
-                
+
         data = UserOut.query.filter_by(noIdentit=noIdentit).all()
         for i in range(len(data)):
                 dataDict = {

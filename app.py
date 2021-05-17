@@ -210,7 +210,7 @@ def editRekomendasi():
     ketersed = data['ketersediaan_ruang']
 
     try:
-        tempat = rekTempat.query.filter_by(namaTmpt=namaTmpt,provinsi=provinsi).first()
+        tempat = rekTempat.query.filter_by(namaTmpt=namaTmpt).first()
         if tempat == None:
             return {'Message': "data Not found"}
         tempat.namaTmpt = namaTmpt
@@ -453,7 +453,7 @@ def rekomendasitempat():
         ketersed = data['ketersediaan_ruang']
 
         try:
-            tempat = rekTempat.query.filter_by(namaTmpt=namaTmpt,provinsi=provinsi).first()
+            tempat = rekTempat.query.filter_by(namaTmpt=namaTmpt).first()
             if tempat == None:
                 return {'Message': "data Not found"}
             tempat.namaTmpt = namaTmpt

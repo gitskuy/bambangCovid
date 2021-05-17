@@ -178,6 +178,25 @@ def login():
 def logout():
     return {'Message':'Logout Sukses'}
 
+
+@app.route('/count', methods = ["POST"])
+def count():
+    data = request.get_json()
+    typeCount = data['type']
+    if typeCount == "tempat":
+        data = rekTempat.query.order_by(rekTempat.namaTmpt).all()
+        return {'Message': len(data)}
+    if typeCount == 'in':
+        data = UserIn.query.order_by(UserIn.tgglCusto).all()
+        return {"Message": len(data)}
+    if typeCount == 'out':
+        data = UserOut.query.order_by(UserOut.tgglCusto).all()
+        return {"Message": len(data)}
+    if typeCount == 'quarantine':
+        data = UserIn.query.order_by(UserIn.tgglCusto).all()
+        return {"Message": len(data)}
+    return {"Message": "You need to enter a valid type of count"}
+
 @app.route("/edit-rekomendasi", methods=['GET','POST'])
 def editRekomendasi():
     data = request.get_json()

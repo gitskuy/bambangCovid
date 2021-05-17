@@ -1,6 +1,7 @@
 from flask import Flask, jsonify, request
 from flask_restful import reqparse, abort, Api, Resource
 from flask_sqlalchemy import SQLAlchemy
+import json
 import psycopg2
 import datetime
 
@@ -378,11 +379,10 @@ def formOut():
             if nameCusto == '':
                 return {'Message':'Data Tidak Ada'}
             else:
-                data = UserOut(nameCusto, tgglCusto, jeKelamin, jeIdentit, noIdentit, noTelepon, alamatKtp, suhuBadan, dftrGjala, gjalalain, kontatsta, provTujIn, kebpTujIn, kecmTujIn, alamTujIn, provTujOu, kabpTujOu, kecmTujOu, alamTujOu, tangMskOu, statusPer, karanName)
-                db.session.add(data)
+                data2 = UserOut(nameCusto, tgglCusto, jeKelamin, jeIdentit, noIdentit, noTelepon, alamatKtp, suhuBadan, dftrGjala, gjalalain, kontatsta, provTujIn, kebpTujIn, kecmTujIn, alamTujIn, provTujOu, kabpTujOu, kecmTujOu, alamTujOu, tangMskOu, statusPer, karanName)
+                db.session.add(data2)
                 db.session.commit()
-                print(data)
-            return jsonify(data), 200
+            return {"Message":"Sukses"}, 200
         except Exception as e:
             return {'error':str(e)}
     else:
@@ -438,7 +438,7 @@ def rekomendasitempat():
                     'ketersediaan_ruang': str(data[i].ketersed)
                 }
                 dataJson.append(dataDict)
-            return jsonify(dataJson)
+            return {"Message":"Sukses"}, 200
         except Exception as e:
             return {'error':str(e)}
     if request.method == 'PUT':

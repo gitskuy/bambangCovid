@@ -49,7 +49,7 @@ class rekTempat(db.Model):
     def __init__(self, namaTmpt, provinsi, kabupatn, kecamatn, alamat, jenis, telepon, ketersed):
         self.namaTmpt = namaTmpt
         self.provinsi = provinsi
-        self.kabupatn = kabuptn
+        self.kabupatn = kabupatn
         self.kecamatn = kecamatn
         self.alamat = alamat
         self.jenis = jenis
@@ -368,7 +368,7 @@ def formOut():
         except Exception as e:
             return {'error':str(e)}
 
-@app.route('/rekomendasi-tempat',methods=['GET','POST'])
+@app.route('/rekomendasi-tempat',methods=['GET','POST', 'PUT'])
 def rekomendasitempat():
     if request.method == 'GET':
         try:
@@ -389,6 +389,8 @@ def rekomendasitempat():
             return jsonify(dataJson)
         except Exception as e:
             return {'error':str(e)}
+    # if request.method == 'PUT':
+    #     req = request.get_json()
     else:
         try:
             data = request.get_json(force=True)
@@ -400,13 +402,18 @@ def rekomendasitempat():
             jenis = data['jenis']
             telepon = data['telepon']
             ketersed = data['ketersediaan_ruang']
+            if namaTmpt == '':
+                return {'Message':'Data Tidak Ada'}
+            else:
+                data = rekTempat(namaTmpt, provinsi, kabupatn, kecamatn, alamat, jenis, telepon, ketersed)
+                db.session.add(data)
+                db.session.commit()
+                print(data)
             return jsonify(data), 200
         except Exception as e:
             return {'error':str(e)}
         
 api.add_resource(HelloWorld, '/')
-#api.add_resource(inGet, '/form-in')
-#api.add_resource(outGet, '/form-out')
 
 if __name__ == '__main__':
      app.run(threaded=True, port=5000)

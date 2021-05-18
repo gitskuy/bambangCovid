@@ -312,11 +312,11 @@ def formIn():
             noTelepon = data['no_telepon']
             alamatKtp = data['alamat_sesuai_ktp']
             suhuBadan = data['suhu_badan']
+            dftrGjala = data['daftar_gejala']
+            gjalalain = data['gejala_lain']
             if data['tidak_ada_gejala'] == False:
-                dftrGjala = data['daftar_gejala']
-                gjalalain = data['gejala_lain']
                 statusPer = 'Karantina'
-            elif:
+            else:
                 statusPer = 'Tidak Karantina'
             kontatsta = data['is_kontak_positif']
             provTujIn = data['provinsi_asal']
@@ -388,9 +388,9 @@ def formOut():
             noTelepon = data['no_telepon']
             alamatKtp = data['alamat_sesuai_ktp']
             suhuBadan = data['suhu_badan']
+            dftrGjala = data['daftar_gejala']
+            gjalalain = data['gejala_lain']
             if data['tidak_ada_gejala'] == False:
-                dftrGjala = data['daftar_gejala']
-                gjalalain = data['gejala_lain']
                 statusPer = 'Karantina'
             else:
                 statusPer = 'Tidak Karantina'

@@ -248,7 +248,7 @@ def searchOut():
                     'no_telepon': str(data[i].noTelepon),
                     'alamat_sesuai_ktp': str(data[i].alamatKtp),
                     'suhu_badan': str(data[i].suhuBadan),
-                    'tidak_ada_gejala': str(data[i].noTelepon),
+                    #'tidak_ada_gejala': str(data[i].noTelepon),
                     'daftar_gejala': str(data[i].dftrGjala),
                     'gejala_lain': str(data[i].gjalalain),
                     'is_kontak_positif': str(data[i].kontatsta),
@@ -277,7 +277,7 @@ def searchOut():
                     'no_telepon': str(data[i].noTelepon),
                     'alamat_sesuai_ktp': str(data[i].alamatKtp),
                     'suhu_badan': str(data[i].suhuBadan),
-                    'tidak_ada_gejala': str(data[i].noTelepon),
+                    #'tidak_ada_gejala': str(data[i].noTelepon),
                     'daftar_gejala': str(data[i].dftrGjala),
                     'gejala_lain': str(data[i].gjalalain),
                     'is_kontak_positif': str(data[i].kontatsta),
@@ -316,7 +316,7 @@ def formIn():
                 dftrGjala = data['daftar_gejala']
                 gjalalain = data['gejala_lain']
                 statusPer = 'Karantina'
-            else:
+            elif data['tidak_ada_gejala'] == True:
                 statusPer = 'Tidak Karantina'
             kontatsta = data['is_kontak_positif']
             provTujIn = data['provinsi_asal']
@@ -353,7 +353,7 @@ def formIn():
                     'no_telepon': str(data[i].noTelepon),
                     'alamat_sesuai_ktp': str(data[i].alamatKtp),
                     'suhu_badan': str(data[i].suhuBadan),
-                    'tidak_ada_gejala': str(data[i].noTelepon),
+                    #'tidak_ada_gejala': str(data[i].noTelepon),
                     'daftar_gejala': str(data[i].dftrGjala),
                     'gejala_lain': str(data[i].gjalalain),
                     'is_kontak_positif': str(data[i].kontatsta),
@@ -428,7 +428,7 @@ def formOut():
                     'no_telepon': str(data[i].noTelepon),
                     'alamat_sesuai_ktp': str(data[i].alamatKtp),
                     'suhu_badan': str(data[i].suhuBadan),
-                    'tidak_ada_gejala': str(data[i].noTelepon),
+                    #'tidak_ada_gejala': str(data[i].noTelepon),
                     'daftar_gejala': str(data[i].dftrGjala),
                     'gejala_lain': str(data[i].gjalalain),
                     'is_kontak_positif': str(data[i].kontatsta),

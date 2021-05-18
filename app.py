@@ -316,7 +316,7 @@ def formIn():
                 dftrGjala = data['daftar_gejala']
                 gjalalain = data['gejala_lain']
                 statusPer = 'Karantina'
-            elif data['tidak_ada_gejala'] == True:
+            elif:
                 statusPer = 'Tidak Karantina'
             kontatsta = data['is_kontak_positif']
             provTujIn = data['provinsi_asal']
